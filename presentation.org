@@ -1,0 +1,146 @@
+* An Atypical Web
+
+Hao Lian
+[[mailto:hi@haolian.org][hi@haolian.org]]
+GitHub [[https://github.com/hlian/][@hlian]]
+[[http://www.originate.com/][Originate, Inc.]]
+
+* Emacs, Behave
+
+(setq indicate-empty-lines nil)
+(custom-set-variables '(custom-enabled-themes '(solarized-dark)))
+(setq org-src-fontify-natively t)
+(revert-buffer t t)
+(visible-mode)
+
+* Let There Be Specification
+
+  + GET / ::
+    returns ={"hello": "world"}=
+
+* Representation Typical
+
+  #+BEGIN_SRC ruby
+    # config/routes.rb
+    root to: 'home#index', defaults: { format: 'json' }
+  #+END_SRC
+  #+BEGIN_SRC ruby
+    # app/controller/home_controller.rb
+    class HomeController < ApplicationController
+      def index
+        respond_to do |format|
+          format.json { render json: @hello_world }
+        end
+      end
+    end
+  #+END_SRC
+
+  1. =routes.rb= -> =home_controller.rb= is magic
+  3. Stringly Typed (Needs Tests?)
+
+* Type Systems As Some Sort Of Modern-Day Cavalry
+
+  #+BEGIN_SRC haskell
+  strip :: String -> String
+  strip = {- implementation here -}
+  #+END_SRC
+
+  #+BEGIN_SRC
+  " hello "       :: String
+  strip           :: String -> String
+  -------------------------------------------
+  strip " hello " :: ?
+  #+END_SRC
+
+  Typing rule: If =f= has type =a -> b= and =x=
+  has type =a=, then =f x= must have type =b=.
+
+  Therefore =(strip " hello ")= must have type
+  =String=.
+
+* But Are The Horses Big Enough?
+
+  What if we could give a type to our HTTP server?
+
+  #+BEGIN_SRC
+  type Server = GET HelloWorld
+  #+END_SRC
+
+  * =HelloWorld= :: the type of our output
+  * =GET Helloworld= :: the type of our server
+  * =type Server= :: create an alias for that cumbersome type
+
+* Insert Fraught and Complicated Demo Here
+
+  [here we go]
+
+* Quick Review of Algebraic Data Types
+
+** Tuples
+  #+BEGIN_SRC haskell
+    data Tuple a b = Tuple a b
+
+    -- example:
+    main :: IO ()
+    main =
+      print (Tuple "Brussel Sprouts" 9.5)
+  #+END_SRC
+
+** Integers
+  #+BEGIN_SRC haskell
+    data Integer = -3 | -2 | -1 | 0 | 1 | 2 | ...
+
+    -- example:
+    three :: Integer
+    three = 1 + 2
+  #+END_SRC
+
+** Maybe
+  #+BEGIN_SRC haskell
+    data Maybe a = Nothing | Just a
+
+    -- example:
+    data User = User Name (Maybe Address)
+
+    users :: [User]
+    users = [
+        User{ name = "Hao", address = Nothing }
+      , User{ name = "Bob", address = Just "123 LOVELACE LN" }
+      ]
+  #+END_SRC
+
+** Either
+  #+BEGIN_SRC haskell
+    data Either l r = Left l | Right r
+
+    -- example:
+    getUsers :: IO (Either DBError [User])
+    getUsers = ...
+  #+END_SRC
+
+** List
+  #+BEGIN_SRC haskell
+    data List a = Nothing | Cons a (List a)
+
+    -- example:
+    numbers = Cons 1 (Cons 2 (Cons 3 Nothing))
+
+    -- or, equivalently
+    numbers = [1, 2, 3]
+  #+END_SRC
+
+** All Together Now
+  #+BEGIN_SRC haskell
+    data User = Accountant Name (Maybe CPALicense)
+              | Astronaut Name (Either Moon Mars)
+              | Auror Name (Wand PhoenixCore)
+              | ...
+  #+END_SRC
+
+* Plugs
+
+  + http://hao.codes ::
+      a Haskell diary
+  + http://susanhamilton.online ::
+      Susan Hamilton's Technology Concern
+      (a newsletter)

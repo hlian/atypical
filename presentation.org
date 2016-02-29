@@ -9,9 +9,6 @@
 
   #+BEGIN_SRC lisp
   (setq indicate-empty-lines nil)
-  (custom-set-variables '(custom-enabled-themes '(solarized-dark)))
-  (setq org-src-fontify-natively t)
-  (revert-buffer t t)
   (visible-mode)
   #+END_SRC
 

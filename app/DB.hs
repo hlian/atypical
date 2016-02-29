@@ -12,26 +12,34 @@ module DB (
 
 import BasePrelude hiding ((&), delete, read, init)
 import Control.Lens
+import Control.Monad.IO.Class
 
 newtype DB = DB (MVar [String])
 
-init :: IO DB
-init = DB <$> newMVar []
+init :: MonadIO m => m DB
+init = liftIO (DB <$> newMVar [])
 
-create :: String -> DB -> IO ()
+create :: MonadIO m => String -> DB -> m Int
 create s (DB mvar) =
-  modifyMVar_ mvar $ \ss -> return (s:ss)
+  (liftIO . modifyMVar mvar) $ \ss ->
+    return (s:ss, length ss)
 
-update :: Int -> String -> DB -> IO ()
-update sid s (DB mvar) =
-  modifyMVar_ mvar $ \ss -> return (ss & element sid .~ s)
+update :: MonadIO m => Int -> DB -> String -> m ()
+update sid (DB mvar) s =
+  (liftIO . modifyMVar_ mvar) $ \ss ->
+    return (ss & element sid .~ s)
 
-delete :: Int -> DB -> IO ()
+delete :: MonadIO m => Int -> DB -> m ()
 delete sid (DB mvar) =
-  modifyMVar_ mvar $ \ss -> return (ss ^.. folded . ifiltered (\i _ -> i /= sid))
+  (liftIO . modifyMVar_ mvar) $ \ss ->
+    return (ss ^.. folded . ifiltered (\i _ -> i /= sid))
 
-read :: Int -> DB -> IO String
-read = undefined
+read :: MonadIO m => Int -> DB -> m (Maybe String)
+read sid (DB mvar) = liftIO $ do
+  ss <- readMVar mvar
+  return (ss ^? element sid)
 
-ls :: DB -> IO [(Int, String)]
-ls = undefined
+ls :: MonadIO m => DB -> m [(Int, String)]
+ls (DB mvar) = liftIO $ do
+  ss <- readMVar mvar
+  return (zip [0..] ss)

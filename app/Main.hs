@@ -2,6 +2,8 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# OPTIONS_GHC -fno-warn-missing-signatures #-}
+
 
 module Main where
 
@@ -10,11 +12,11 @@ import           DB (DB)
 import           Data.Aeson (encode)
 import qualified Data.ByteString.Lazy.Char8 as BL8
 import           Data.Swagger (info, title, version, Swagger)
-import qualified Data.Swagger as Swagger
 import           Network.Wai.Handler.Warp (run)
 
 import           Control.Lens
 import           OurPrelude
+import           Servant.Client
 import           Servant.Swagger
 
 type Interface =
@@ -64,5 +66,10 @@ main :: IO ()
 main = do
   db <- DB.init
   BL8.writeFile "swagger.json" (encode swag)
-  run 8000 (serve proxy
+  run 9000 (serve proxy
             (ls db :<|> post db :<|> (\hid -> get hid db :<|> put hid db :<|> delete hid db)))
+
+ls' :<|> post' :<|> rest' =
+  client proxy (BaseUrl Http "localhost" 9000)
+get' :<|> put' :<|> delete' =
+  rest' 1

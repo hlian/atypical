@@ -1,16 +1,28 @@
 * An Atypical Web
 
+
+  a talk about Haskell
+  a talk about Servant
+
   + Hao Lian
-  + [[mailto:hi@haolian.org][hi@haolian.org]]
-  + GitHub [[https://github.com/hlian/][@hlian]]
-  + [[http://www.originate.com/][Originate, Inc.]]
+  + Flatiron/Fog Creek/Trello Fellowship Mentor
+  + hi@haolian.org
+  + GitHub https://github.com/hlian
+  + Originate http://originate.com
 
 * Emacs, Behave
 
   #+BEGIN_SRC lisp
   (setq indicate-empty-lines nil)
   (visible-mode)
+  (setq-default mode-line-format nil)
   #+END_SRC
+
+* Solemn Vow
+
+  + we're going to osmose some haskell
+  + we're going to make goofy shit
+  + we're going to learn one cool animal fact
 
 * Let There Be Specification
 
@@ -56,6 +68,12 @@
 
   Therefore =(strip " hello ")= must have type
   =String=.
+
+* Useless Metaphors for Types
+
+  + blueprints
+  + skeleton
+  + theorem
 
 * But Are The Horses Big Enough?
 
@@ -136,6 +154,14 @@
               | ...
   #+END_SRC
 
+* One Cool Animal Fact
+
+  https://www.newscientist.com/article/2078781-wild-gorillas-compose-happy-songs-that-they-hum-during-meals/
+
+* What Did We Learn
+
+  [type here]
+
 * Plugs
 
   + http://hao.codes ::
@@ -143,3 +169,5 @@
   + http://susanhamilton.online ::
       Susan Hamilton's Technology Concern
       (a newsletter)
+  + http://www.meetup.com/NY-Haskell/ ::
+      NY Haskell Meetup
